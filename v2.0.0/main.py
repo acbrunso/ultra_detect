@@ -121,7 +121,7 @@ class Window(QWidget):
 
 
         self.make_image_tile('raspberrypi13', 0, 0, 0)
-        self.make_image_tile('raspberrypi2', 0, 1, 1)
+        self.make_image_tile('raspberrypi16', 0, 1, 1)
         self.make_image_tile('raspberrypi3', 0, 2, 2)
         self.make_image_tile('raspberrypi4', 1, 0, 3)
         self.make_image_tile('raspberrypi5', 1, 1, 4)

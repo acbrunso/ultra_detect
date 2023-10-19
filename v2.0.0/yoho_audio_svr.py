@@ -56,7 +56,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
           
             data = frame 
             size = len(data)
-            print(size)
+            #print(size)
             extra_data_size = len(extra_data)
             try:
                 self.request.sendall(struct.pack(">L", size) + data + struct.pack(">L", extra_data_size) + extra_data)

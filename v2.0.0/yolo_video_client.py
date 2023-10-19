@@ -206,7 +206,6 @@ class VideoClient(QThread):
 
     def populate_log(self):
         resp = ""
-        print("populating log")
         if self.results is not None:
             print("we have a value in results")
             if(isinstance(self.results, list)):
