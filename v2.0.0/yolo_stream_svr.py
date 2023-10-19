@@ -12,28 +12,16 @@ import argparse
 import socketserver
 import struct
 import cv2
-import io
-import socket
 import struct
-import time
 import pickle
-import numpy as np
-#import imutils
-#import tensorflow as tf
-from ultralytics import YOLO
 
 from VideoThreading.CountsPerSec import CountsPerSec
 from VideoThreading.VideoGet import VideoGet
 from VideoThreading.YOLOPredictor import YOLOPredictor
+from YMessenger import YMessenger
 
 
 
-class YMessenger():
-    def __init__(self):
-        pass
-
-    def setMessage(self, msg):
-        self.message = msg
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
     """
@@ -85,6 +73,9 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             if video_getter.stopped:
                 msgr = YMessenger().setMessage(video_getter.getMessage())
                 extra_data = pickle.dumps(msgr)
+                extra_data_size = len(extra_data)
+                size = len(data)
+                print(msgr)
                 try:
                     self.request.sendall(struct.pack(">L", size) + data + struct.pack(">L", extra_data_size) + extra_data)
                     #self.request.sendall(struct.pack(">L", size) + data + struct.pack(">L", 0))

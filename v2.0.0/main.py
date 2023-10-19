@@ -6,6 +6,8 @@
 import sys
 
 from PyQt5 import QtGui
+from ssh_connect import SSHServer
+import time
 
 from PyQt5.QtWidgets import (
     QApplication,
@@ -13,7 +15,8 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QWidget,
     QLabel,
-    QPlainTextEdit
+    QPlainTextEdit,
+    QComboBox
 )
 from PyQt5.QtCore import pyqtSlot, Qt, QThread
 from PyQt5.QtGui import QPixmap
@@ -34,6 +37,7 @@ class Window(QWidget):
         self.txtHosts.append(QPlainTextEdit())
         self.txtHosts[-1].setFixedHeight(25)
         self.txtHosts[-1].appendPlainText(hostname)
+
 
         '''
         0  0
@@ -142,6 +146,7 @@ class Window(QWidget):
         self.outer_layout.addLayout(self.outer_right_layout,0,1)
         self.setLayout(self.outer_layout)
 
+
     def toggle_predictions(self, idx):
         if(self.video_threads[idx].predicting == True):
             self.btn_toggle_predictions[idx].setText("Predict")
@@ -155,19 +160,28 @@ class Window(QWidget):
     def toggle_video_audio_connect_event(self, idx):
         #if we are already connected and running, we need to disconnect and change the text back to "Connect"
         if(self.video_threads[idx]._run_flag == True):
-            self.btnConnects[idx].setText("Connect")
-            self.btnConnects[idx].setStyleSheet("background-color : light gray")
             self.video_threads[idx]._run_flag = False
             self.audio_threads[idx]._run_flag = False
+            self.btnConnects[idx].setText("Connect")
+            self.btnConnects[idx].setStyleSheet("background-color : light gray")            
 
         else:
-  
-            self.video_threads[idx].setHost(self.txtHosts[idx].toPlainText(), 8485)
-            self.audio_threads[idx].setHost(self.txtHosts[idx].toPlainText(), 8486)  
-            self.video_threads[idx].start()  
-            self.audio_threads[idx].start()
-            self.btnConnects[idx].setText("Connected")
-            self.btnConnects[idx].setStyleSheet("background-color : green") 
+            self.btnConnects[idx].setText("Connecting")
+            self.btnConnects[idx].repaint()
+            resp1 = self.video_threads[idx].connect(self.txtHosts[idx].toPlainText(), 8485)
+            resp2 = self.audio_threads[idx].connect(self.txtHosts[idx].toPlainText(), 8486)  
+            if(resp1 == False or resp2 == False):
+                print('failed to connect to either video or audio or both')
+                print("exiting audio feed")
+                self.audio_threads[idx].client_socket.close()
+                self.audio_threads[idx].audio_capturer.close()      
+                self.video_threads[idx].client_socket.close()
+                self.btnConnects[idx].setText("Connect")
+            else:
+                self.video_threads[idx].start()  
+                self.audio_threads[idx].start()
+                self.btnConnects[idx].setText("Connected")
+                self.btnConnects[idx].setStyleSheet("background-color : green") 
 
 
 
