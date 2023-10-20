@@ -1,7 +1,7 @@
 
 
-# VERSION: 1.2.2
-# implement ssh connect to start server on pi if it is not running already
+# VERSION: 2.0.1
+# added basic network manager and some other nicities
 
 
 import os

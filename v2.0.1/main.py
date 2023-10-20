@@ -1,7 +1,5 @@
-
-
-# VERSION: 2.0.0
-# implement audio live stream from server.  
+# VERSION: 2.0.1
+# added basic network manager and some other nicities
 
 import sys
 

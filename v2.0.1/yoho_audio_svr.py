@@ -1,7 +1,7 @@
 
 
-# VERSION: 2.0.0
-# reads pysudio from respeaker and sends back to client and plays over speaker
+# VERSION: 2.0.1
+# added basic network manager and some other nicities
 
 
 import argparse
