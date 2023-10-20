@@ -1,3 +1,7 @@
+# VERSION: 2.0.1
+# added basic network manager and some other nicities
+
+
 import paramiko
 import time
 class SSHServer:
@@ -7,7 +11,7 @@ class SSHServer:
 
     def runAudioServer(self):
         print('running ssh audio connect')
-        ssh_stdin, ssh_stdout, ssh_stderr = self.ssh.exec_command('python /home/drone/Desktop/ultra_detect/v2.0.0/yoho_audio_svr.py -p 8486 &')
+        ssh_stdin, ssh_stdout, ssh_stderr = self.ssh.exec_command('python /home/drone/Desktop/ultra_detect/v2.0.1/yoho_audio_svr.py -p 8486 &')
         msg = self.get_error(ssh_stderr)
         self.ssh.close()
         return msg
@@ -15,7 +19,7 @@ class SSHServer:
 
     def runVideoServer(self):
         print('running ssh video connect')
-        ssh_stdin, ssh_stdout, ssh_stderr = self.ssh.exec_command('python /home/drone/Desktop/ultra_detect/v2.0.0/yolo_stream_svr.py -p 8485 &')
+        ssh_stdin, ssh_stdout, ssh_stderr = self.ssh.exec_command('python /home/drone/Desktop/ultra_detect/v2.0.1/yolo_stream_svr.py -p 8485 &')
         msg = self.get_error(ssh_stderr)
         self.ssh.close()
         return msg
